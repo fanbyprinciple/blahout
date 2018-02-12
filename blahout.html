@@ -23,8 +23,8 @@
             ball_radius = 10;
             ball_x = canvas.width/2;
             ball_y = canvas.height-30;
-            var dx = 2;
-            var dy = -2;
+            var dx = 4;
+            var dy = -4;
             
             paddle_x = canvas.width/2;
             paddle_y = canvas.height-10;
@@ -106,6 +106,7 @@
                          dy = 0 ;
                          dx = 0 ;
                         if(lives == 0) {
+                            //draw_gameover();
                             alert("GAME OVER");
                             document.location.reload();
                                                             
@@ -113,8 +114,8 @@
                         else {    
                             ball_x = canvas.width/2;
                             ball_y = canvas.height-40;
-                            dx = 2;
-                            dy = -2;                              
+                            dx = 4;
+                            dy = -4;                              
                             }
                     }    
                 }
@@ -182,16 +183,26 @@
             }
 
             function draw_score(){
-                ctx.font = "16px Arial";
+                ctx.font = "16px monospace";
                 ctx.fillStyle = "#0095DD";
                 ctx.fillText("Score: "+ score, 8, 20);
             }
 
             function draw_lives(){
-                ctx.font = "16px Arial";
+                ctx.font = "16px monospace";
                 ctx.fillStyle = "#0095DD";
-                ctx.fillText("Lives: " + lives, canvas.width-65, 20 )
+                ctx.fillText("Lives: " + lives, canvas.width-80, 20 )
             }
+
+            // function draw_gameover(){
+            //     clearRect(0,0,canvas.width,canvas.height)
+            //     ctx.font = "48px monospace";
+            //     ctx.fillStyle = "#0095DD";
+            //     ctx.fillText("Game Over", canvas.width -10 ,canvas.height -10)
+            //     requestAnimationFrame(draw);
+                
+            // }
+            
             function draw() {
                 ctx.clearRect(0,0,canvas.width, canvas.height); 
                 draw_ball();
@@ -200,12 +211,11 @@
                 collisionDetection();
                 draw_score();
                 draw_lives();
-                
+                requestAnimationFrame(draw);    
             }
             
             draw();
-            requestAnimationFrame(draw);
-
+            
                 
             
         </script>
