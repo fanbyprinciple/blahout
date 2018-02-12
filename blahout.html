@@ -18,13 +18,14 @@
             framespeed = 10;
 
             score = 0;
-            var lives = 3;
+            lives = 3;
+            level = 1;
 
             ball_radius = 10;
             ball_x = canvas.width/2;
             ball_y = canvas.height-30;
-            var dx = 4;
-            var dy = -4;
+            var dx = 3;
+            var dy = -3;
             
             paddle_x = canvas.width/2;
             paddle_y = canvas.height-10;
@@ -43,7 +44,7 @@
             for(i=0; i <brick_row; ++i) {
                 bricks[i] = [];
                 for(j=0; j<brick_column ; ++j) {
-                    bricks[i][j] = { x : 0, y : 0, status : 1, counter : 2 };
+                    bricks[i][j] = { x : 0, y : 0, status : 1, counter : 1 };
                 }
             }
 
@@ -114,8 +115,8 @@
                         else {    
                             ball_x = canvas.width/2;
                             ball_y = canvas.height-40;
-                            dx = 4;
-                            dy = -4;                              
+                            dx = 3;
+                            dy = -3;                              
                             }
                     }    
                 }
@@ -153,7 +154,7 @@
                             bricks[i][j].y = i * (brick_height + brick_padding) + brickOffsetTop;
                             ctx.beginPath();
                             ctx.rect(bricks[i][j].x, bricks[i][j].y, brick_width, brick_height)
-                            if(bricks[i][j].counter > 1){
+                            if(bricks[i][j].counter == 1){
                                 ctx.fillStyle = "#AABBEE";
                             }
                             else {
@@ -174,12 +175,26 @@
                             if(ball_x > b.x && ball_x < b.x+brick_width && ball_y > b.y && ball_y < b.y+brick_height) {
                                 dy = -dy;
                                 b.counter--;
-                                if(b.counter ==0)
+                                if(b.counter ==0) {
                                     b.status = 0;
                                     score += 10;
-                            }
-                        }
-                }
+                                    if (score%150 == 0){
+                                        level ++ ;
+                                        lives ++ ;
+                                        ball_x = canvas.width/2;
+                                        ball_y = canvas.height-40;
+                                        dx = dx + 1;
+                                        dy = dy + 1;
+                                        for(i=0 ; i< brick_row ; i++)
+                                            for(j=0 ; j< brick_column ; ++j) {  
+                                                bricks[i][j].status = 1;
+                                                bricks[i][j].counter = level;
+                                            }
+                                    }
+                                }
+                            } 
+                        }           
+                    }
             }
 
             function draw_score(){
@@ -192,6 +207,12 @@
                 ctx.font = "16px monospace";
                 ctx.fillStyle = "#0095DD";
                 ctx.fillText("Lives: " + lives, canvas.width-80, 20 )
+            }
+
+            function draw_level(){
+                ctx.font = "16px monospace";
+                ctx.fillStyle = "#0095DD";
+                ctx.fillText("Level: " + level, canvas.width/2-40, 20 )
             }
 
             // function draw_gameover(){
@@ -211,6 +232,7 @@
                 collisionDetection();
                 draw_score();
                 draw_lives();
+                draw_level();
                 requestAnimationFrame(draw);    
             }
             
